@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "691521070042",
+    "firebase_url": "https://dephone-c04a7.firebaseio.com",
+    "project_id": "dephone-c04a7",
+    "storage_bucket": "dephone-c04a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691521070042:android:b4058c4db824629d",
+        "android_client_info": {
+          "package_name": "com.rstack.dephone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "691521070042-u536qjhj0aajp5jetes1fi2h3d5bkp4m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rstack.dephone",
+            "certificate_hash": "b0b30461b92a08b453359b750b29eb018f648a0c"
+          }
+        },
+        {
+          "client_id": "691521070042-b1v1l998m8pvmj80kef8nuiqagrfi8jk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgjezQ9Yt8fsG8siRv7abYrbZhCTKeedg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "691521070042-b1v1l998m8pvmj80kef8nuiqagrfi8jk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

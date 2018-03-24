@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.rstack.dephone">
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW " />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.REAL_GET_TASKS" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- create service -->
+
+        <service
+            android:name=".SensorService"
+            android:enabled="true" />
+
+        <!-- Create reciever -->
+
+        <receiver
+            android:name=".SensorRestarterBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="com.rstack.dephone.RestartSensor" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".AlertView"
+            android:theme="@style/Theme.Transparent" />
+        <activity android:name=".AppSettingsActivity" />
+        <activity
+            android:name=".WelcomeActivity"
+            android:theme="@style/Theme.Fullscreen">
+        </activity>
+    </application>
+
+</manifest>

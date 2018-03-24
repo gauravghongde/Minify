@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">de phone</string>
+    <string name="d_phone">D-Phone</string>
+    <string name="get_started">GET STARTED</string>
+    <string name="app_description_welcome">Restrict your phone usage\nGet Reminders\nTrack your Progress\nand\nSave your valuable time</string>
+    <string name="tandc">I accept all the <a href="http://google.com">Terms and Conditions</a></string>
+</resources>
