@@ -30,7 +30,10 @@ public class SensorService extends Service {
     public int mcounter=0;
     public int counter=0;
     private long DailyTimeStamp;
-    String PackageName;
+    String PackageName,ChkPackageName;
+    long TimeInforground;
+    int minutes,seconds,hours,h=0,m=0,s=0;
+    long time = System.currentTimeMillis();
     //ActivityManager mActivityManager =(ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
 
     public SensorService(Context applicationContext) {
@@ -113,8 +116,9 @@ public class SensorService extends Service {
         PackageName = "Nothing" ;
 
         UsageStatsManager mUsageStatsManager = (UsageStatsManager)getSystemService(this.USAGE_STATS_SERVICE);
-
         long time = System.currentTimeMillis();
+
+        List<UsageStats> stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000*10, time);
 
         final UsageEvents usageEvents = mUsageStatsManager.queryEvents(time - 1000*10, time);
         while (usageEvents.hasNextEvent()) {
@@ -131,9 +135,11 @@ public class SensorService extends Service {
                         PackageName = null;
                     }*/
             }
-            Log.i("BAC123456", "PackageName is " + PackageName + "is running");
+
         }
-        if(!usageEvents.hasNextEvent()){
+        if(!usageEvents.hasNextEvent() && !PackageName.equalsIgnoreCase("com.rstack.dephone")
+                ){
+            Log.i("BAC123", "PackageName is " + PackageName + "is running");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -141,11 +147,54 @@ public class SensorService extends Service {
             }
             mcounter++;
             Log.i("BAC123456", "counter: "+ mcounter);
-            if(mcounter>=3){
+            if(mcounter>=10){
                 Intent i = new Intent(this, AlertView.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("msg",PackageName);
                 startActivity(i);
+            }
+        }
+        if(stats != null) {
+            SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
+            for (UsageStats usageStats : stats) {
+                TimeInforground = usageStats.getTotalTimeInForeground();
+                ChkPackageName = usageStats.getPackageName();
+                if(ChkPackageName.equalsIgnoreCase(PackageName)) {
+                    Log.i("pkg_name", "PackageName is" + PackageName);
+
+                    minutes = (int) ((TimeInforground / (1000 * 60)) % 60);
+                    seconds = (int) (TimeInforground / 1000) % 60;
+                    hours = (int) ((TimeInforground / (1000 * 60 * 60)) % 24);
+
+                    h = h + hours;
+                    m = m + minutes;
+                    if (m >= 60) {
+                        h = h + m / 60;
+                        m = m % 60;
+                    }
+                    s = s + seconds;
+                    if (s >= 60) {
+                        m = m + s / 60;
+                        s = s % 60;
+                    }
+
+                    Log.i("BAC123", "PackageName is " + ChkPackageName + " Time is: " + hours + "h" + ":" + minutes + "m" + seconds + "s");
+                    //TODO:
+                    // check hasLimit()
+                    // chk less than limit
+
+                    /*
+                    if(hasLimit(Package)){
+                        if(getAppLimit(Package)<currAppUsage){
+                            Intent i = new Intent(this, AlertView.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            i.putExtra("msg",PackageName);
+                            startActivity(i);
+                        }
+                    }
+                    */
+
+                }
             }
         }
 

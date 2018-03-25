@@ -3,6 +3,7 @@ package com.rstack.dephone;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private Button mGetStarted;
     private CheckBox mTnCchkBox;
-    boolean flag = false;
 
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -48,6 +48,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user!=null){
                     Log.d("auth",user.getUid());
+
                     Intent mainActivityIntent = new Intent(WelcomeActivity.this, MainActivity.class);
                     mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(mainActivityIntent);
