@@ -7,81 +7,60 @@
     tools:context="com.rstack.dephone.MainActivity">
 
     <Button
-        android:id="@+id/btn_signin"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="11dp"
-        android:text="SIGN IN" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/btn_signin"
-        android:layout_marginTop="26dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/StaticTxt1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_signin"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="68dp"
-            android:text="Today's Phone Usage"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/total_usage_daily"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/StaticTxt1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="18dp"
-            android:text="TextView"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-        <TextView
-            android:id="@+id/staticTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/total_usage_daily"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="48dp"
-            android:text="Today's Total Phone-Unlocks"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/total_unlocks_daily"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/staticTxt"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="11dp"
-            android:text="TextView"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-    </LinearLayout>
-
-    <Button
         android:id="@+id/settings"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btn_signin"
-        android:layout_alignBottom="@+id/btn_signin"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="30dp"
+        android:layout_below="@+id/total_unlocks_daily"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:text="Button" />
+
+    <TextView
+        android:id="@+id/total_unlocks_daily"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/staticTxt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <TextView
+        android:id="@+id/staticTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/total_usage_daily"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:text="Today's Total Phone-Unlocks"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/StaticTxt1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_signin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="68dp"
+        android:text="Today's Phone Usage"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/total_usage_daily"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/StaticTxt1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
 </android.widget.RelativeLayout>
