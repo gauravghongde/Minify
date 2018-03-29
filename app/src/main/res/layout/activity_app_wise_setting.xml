@@ -6,25 +6,392 @@
     android:layout_height="match_parent"
     tools:context="com.rstack.dephone.AppWiseSettingActivity">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="120dp"
-        android:ems="10"
-        android:inputType="time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="128dp"
-        android:layout_marginTop="64dp"
-        android:text="Set App Limit "
+    <android.support.v7.widget.CardView
+        android:layout_width="316dp"
+        android:layout_height="510dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.657">
 
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="48dp"
+                android:text="min"
+                android:textSize="15sp"
+                app:layout_constraintStart_toEndOf="@+id/cont_min_limit"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="21dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="48dp"
+                android:text="hr"
+                android:textSize="15sp"
+                app:layout_constraintStart_toEndOf="@+id/cont_hr_limit"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="180dp"
+                android:text="min"
+                android:textSize="15sp"
+                app:layout_constraintStart_toEndOf="@+id/daily_min_limit"
+                app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="21dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="180dp"
+                android:text="hr"
+                android:textSize="15sp"
+                app:layout_constraintStart_toEndOf="@+id/daily_hr_limit"
+                app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
+
+            <NumberPicker
+                android:id="@+id/cont_hr_limit"
+                android:layout_width="32dp"
+                android:layout_height="43dp"
+                android:layout_marginEnd="84dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.36"
+                app:layout_constraintStart_toEndOf="@+id/continious_usage_alert_cb"
+                app:layout_constraintTop_toBottomOf="@+id/daily_hr_limit" />
+
+            <NumberPicker
+                android:id="@+id/cont_min_limit"
+                android:layout_width="32dp"
+                android:layout_height="43dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.473"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cont_hr_limit"
+                app:layout_constraintTop_toBottomOf="@+id/daily_min_limit" />
+
+            <TextView
+                android:id="@+id/app_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/app_setting_image_view"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@+id/app_setting_image_view"
+                android:text="Facebook"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/view"
+                app:layout_constraintStart_toEndOf="@+id/app_setting_image_view"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.74" />
+
+            <ImageView
+                android:id="@+id/app_setting_image_view"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/view"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintBottom_toTopOf="@+id/view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@mipmap/ic_launcher_round" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="293dp"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/app_setting_image_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="76dp"
+                android:background="@color/common_google_signin_btn_text_light_default"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/week_and_day_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:text="Weekly Average Usage "
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@+id/view3"
+                    app:layout_constraintEnd_toStartOf="@+id/view2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/week_analysis" />
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="293dp"
+                    android:layout_height="0.5dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="76dp"
+                    android:background="@color/common_google_signin_btn_text_light_default"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="3dp"
+                    android:layout_height="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/common_google_signin_btn_text_light_default"
+                    app:layout_constraintBottom_toTopOf="@+id/view3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RelativeLayout
+                    android:id="@+id/week_analysis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="27dp"
+                    android:layout_alignTop="@+id/view2"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_toStartOf="@+id/view2"
+                    app:layout_constraintBottom_toBottomOf="@+id/view2"
+                    app:layout_constraintEnd_toStartOf="@+id/view2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/hour_week"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:text="30"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/min_week"
+                        android:layout_alignBottom="@+id/min_week"
+                        android:layout_marginStart="2dp"
+                        android:layout_toEndOf="@+id/min_week"
+                        android:text="min"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/min_week"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/hour_week"
+                        android:layout_alignBottom="@+id/hour_week"
+                        android:layout_marginStart="25dp"
+                        android:layout_toEndOf="@+id/hour_week"
+                        android:text="10"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/min_week"
+                        android:layout_alignBottom="@+id/min_week"
+                        android:layout_marginStart="2dp"
+                        android:layout_toEndOf="@+id/hour_week"
+                        android:text="hr"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/day_analysis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="27dp"
+                    android:layout_alignBaseline="@+id/week_analysis"
+                    android:layout_alignBottom="@+id/week_analysis"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@+id/view2"
+                    app:layout_constraintBottom_toBottomOf="@+id/view2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/view2"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/hour_day"
+                        android:layout_alignBottom="@+id/hour_day"
+                        android:layout_marginStart="2dp"
+                        android:layout_toEndOf="@+id/hour_day"
+                        android:text="hr"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/hour_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="sans-serif"
+                        android:text="20"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/min_day"
+                        android:layout_alignBottom="@+id/min_day"
+                        android:layout_marginStart="2dp"
+                        android:layout_toEndOf="@+id/min_day"
+                        android:text="min"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/min_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/hour_day"
+                        android:layout_alignBottom="@+id/hour_day"
+                        android:layout_marginStart="25dp"
+                        android:layout_toEndOf="@+id/hour_day"
+                        android:text="50"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:text="Today's Usage"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@+id/view3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/view2"
+                    app:layout_constraintTop_toBottomOf="@+id/day_analysis" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <Button
+                android:id="@+id/cancel_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="CANCEL"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/apply_btn" />
+
+            <Button
+                android:id="@+id/apply_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="16dp"
+                android:text="APPLY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <NumberPicker
+                android:id="@+id/daily_hr_limit"
+                android:layout_width="32dp"
+                android:layout_height="43dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="160dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.22"
+                app:layout_constraintStart_toEndOf="@+id/daily_limit_cb"
+                app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
+
+            <NumberPicker
+                android:id="@+id/daily_min_limit"
+                android:layout_width="32dp"
+                android:layout_height="43dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="160dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.473"
+                app:layout_constraintStart_toEndOf="@+id/daily_hr_limit"
+                app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
+
+            <CheckBox
+                android:id="@+id/daily_limit_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="168dp"
+                android:text="Set Daily Limit "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
+
+            <CheckBox
+                android:id="@+id/continious_usage_alert_cb"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="32dp"
+                android:text="Show Alert for \ncontinious usage"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/daily_limit_cb" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

@@ -1,66 +1,366 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.rstack.dephone.MainActivity">
 
+    <View
+        android:id="@+id/view4"
+        android:layout_width="350dp"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/app_setting_image_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="204dp"
+        android:background="@color/common_google_signin_btn_text_light_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/week_and_day_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="24dp"
+            android:text="Weekly Average Usage "
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/view3"
+            app:layout_constraintEnd_toStartOf="@+id/view2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/week_analysis" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="350dp"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/app_setting_image_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="88dp"
+            android:background="@color/common_google_signin_btn_text_light_default"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="3dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/app_setting_image_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/common_google_signin_btn_text_light_default"
+            app:layout_constraintBottom_toTopOf="@+id/view3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/week_analysis"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_alignTop="@+id/view2"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="24dp"
+            android:layout_toStartOf="@+id/view2"
+            app:layout_constraintBottom_toBottomOf="@+id/view2"
+            app:layout_constraintEnd_toStartOf="@+id/view2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/hour_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="30"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/min_week"
+                android:layout_alignBottom="@+id/min_week"
+                android:layout_marginStart="2dp"
+                android:layout_toEndOf="@+id/min_week"
+                android:text="min"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/min_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/hour_week"
+                android:layout_alignBottom="@+id/hour_week"
+                android:layout_marginStart="25dp"
+                android:layout_toEndOf="@+id/hour_week"
+                android:text="10"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/min_week"
+                android:layout_alignBottom="@+id/min_week"
+                android:layout_marginStart="2dp"
+                android:layout_toEndOf="@+id/hour_week"
+                android:text="hr"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/day_analysis"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_alignBaseline="@+id/week_analysis"
+            android:layout_alignBottom="@+id/week_analysis"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/view2"
+            app:layout_constraintBottom_toBottomOf="@+id/view2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view2"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/hour_day"
+                android:layout_alignBottom="@+id/hour_day"
+                android:layout_marginStart="2dp"
+                android:layout_toEndOf="@+id/hour_day"
+                android:text="hr"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/hour_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:fontFamily="sans-serif"
+                android:text="20"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/min_day"
+                android:layout_alignBottom="@+id/min_day"
+                android:layout_marginStart="2dp"
+                android:layout_toEndOf="@+id/min_day"
+                android:text="min"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/min_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/hour_day"
+                android:layout_alignBottom="@+id/hour_day"
+                android:layout_marginStart="25dp"
+                android:layout_toEndOf="@+id/hour_day"
+                android:text="50"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="8dp"
+            android:text="Today's Usage"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/view3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view2"
+            app:layout_constraintTop_toBottomOf="@+id/day_analysis" />
+
+    </android.support.constraint.ConstraintLayout>
+
     <Button
         android:id="@+id/settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/total_unlocks_daily"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:text="Button" />
-
-    <TextView
-        android:id="@+id/total_unlocks_daily"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/staticTxt"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="11dp"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-    <TextView
-        android:id="@+id/staticTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/total_usage_daily"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
-        android:text="Today's Total Phone-Unlocks"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/StaticTxt1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_signin"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
-        android:text="Today's Phone Usage"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="8dp"
+        android:text="Button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
 
     <TextView
         android:id="@+id/total_usage_daily"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/StaticTxt1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings" />
 
-</android.widget.RelativeLayout>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="Top 10 Most Used Apps Today"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+    <ImageButton
+        android:id="@+id/top_app_1"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+    <ImageButton
+        android:id="@+id/top_app_2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/top_app_1"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+    <ImageButton
+        android:id="@+id/top_app_3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/top_app_2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+    <ImageButton
+        android:id="@+id/top_app_4"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/top_app_3"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+    <ImageButton
+        android:id="@+id/top_app_5"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/top_app_4"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+    <ImageButton
+        android:id="@+id/top_app_6"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_app_1"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+    <ImageButton
+        android:id="@+id/top_app_7"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/top_app_6"
+        app:layout_constraintTop_toBottomOf="@+id/top_app_2"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+    <ImageButton
+        android:id="@+id/top_app_8"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/top_app_7"
+        app:layout_constraintTop_toBottomOf="@+id/top_app_3"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+    <ImageButton
+        android:id="@+id/top_app_9"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/top_app_8"
+        app:layout_constraintTop_toBottomOf="@+id/top_app_4"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+    <ImageButton
+        android:id="@+id/top_app_10"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/top_app_9"
+        app:layout_constraintTop_toBottomOf="@+id/top_app_5"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+</android.support.constraint.ConstraintLayout>

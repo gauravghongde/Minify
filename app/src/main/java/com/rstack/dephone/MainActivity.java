@@ -24,11 +24,13 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mButSetting;
     private TextView mDailyUsage,mDailyUnlocks;
-
+    private TextView mHourDay,mMinDay,mHourWeek,mMinWeek;
+    DatabaseClass dbClass = new DatabaseClass();
     Intent mServiceIntent;
-    private SensorService mSensorService;
 
     Context ctx;
+
+
     public Context getCtx(){
         return ctx;
     }
@@ -52,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
         ctx = this;
         mButSetting = findViewById(R.id.settings);
         mDailyUsage = findViewById(R.id.total_usage_daily);
-        mDailyUnlocks = findViewById(R.id.total_unlocks_daily);
+        //mDailyUnlocks = findViewById(R.id.total_unlocks_daily);
+        mHourDay = findViewById(R.id.hour_day);
+        mMinDay = findViewById(R.id.min_day);
 
         UsageStatsManager mUsageStatsManager = (UsageStatsManager)getSystemService(this.USAGE_STATS_SERVICE);
         //UsageStats usageStats;
@@ -86,11 +90,17 @@ public class MainActivity extends AppCompatActivity {
                     s = s%60;
                 }
 
+                dbClass.setAppListTodaysTimings(PackageName,hours,minutes);
                 Log.i("BAC123", "PackageName is" + PackageName + "Time is: " + hours + "h" + ":" + minutes + "m" + seconds + "s");
             }
         }
 
-        mDailyUsage.setText(Integer.toString(h)+"hr "+Integer.toString(m)+"min "+Integer.toString(s)+"sec");
+        //mDailyUsage.setText(Integer.toString(h)+"hr "+Integer.toString(m)+"min "+Integer.toString(s)+"sec");
+        mHourDay.setText(Integer.toString(h));
+        mMinDay.setText(Integer.toString(m));
+
+        //Log.i("Applistusage",dbClass.gerAppListTodaysTimings().toString());
+
         mButSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,8 +110,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-        mSensorService = new SensorService(getCtx());
+        SensorService mSensorService = new SensorService(getCtx());
         mServiceIntent = new Intent(ctx, mSensorService.getClass());
         if (!isMyServiceRunning(mSensorService.getClass())) {   //starts if isn't already running
             startService(mServiceIntent);

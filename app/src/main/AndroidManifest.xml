@@ -57,7 +57,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".AppWiseSettingActivity"></activity>
+        <activity
+            android:name=".AppWiseSettingActivity"
+            android:theme="@style/Theme.Transparent">
+        </activity>
     </application>
 
 </manifest>

@@ -17,6 +17,7 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
 
     Context context1;
     List<String> stringList;
+    DatabaseClass dbClass = new DatabaseClass();
 
     public AppsAdapter(Context context, List<String> list){
 
@@ -58,12 +59,15 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
         ApkInfoExtractor apkInfoExtractor = new ApkInfoExtractor(context1);
 
         final String ApplicationPackageName = (String) stringList.get(position);
-        String ApplicationLabelName = apkInfoExtractor.GetAppName(ApplicationPackageName);
+        final String ApplicationLabelName = apkInfoExtractor.GetAppName(ApplicationPackageName);
         Drawable drawable = apkInfoExtractor.getAppIconByPackageName(ApplicationPackageName);
 
         viewHolder.textView_App_Name.setText(ApplicationLabelName);
 
-        viewHolder.textView_App_Package_Name.setText(ApplicationPackageName);
+        //final String AppUsageByPackage = Integer.toString(dbClass.getHourByPackageName(ApplicationPackageName))+"hr "+
+          //      Integer.toString(dbClass.getMinByPackageName(ApplicationPackageName))+"min";
+
+        viewHolder.textView_App_Package_Name.setText(" ");
 
         viewHolder.imageView.setImageDrawable(drawable);
 
@@ -72,7 +76,14 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
             @Override
             public void onClick(View view) {
 
-                Intent intent = context1.getPackageManager().getLaunchIntentForPackage(ApplicationPackageName);
+                Intent i = new Intent(view.getContext(), AppWiseSettingActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("app_name",ApplicationLabelName);
+                i.putExtra("package_name",ApplicationPackageName);
+                view.getContext().startActivity(i);
+
+
+                /*Intent intent = context1.getPackageManager().getLaunchIntentForPackage(ApplicationPackageName);
                 if(intent != null){
 
                     context1.startActivity(intent);
@@ -81,7 +92,7 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
                 else {
 
                     Toast.makeText(context1,ApplicationPackageName + " Error, Please Try Again.", Toast.LENGTH_LONG).show();
-                }
+                }*/
             }
         });
     }
