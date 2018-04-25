@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AlertView extends AppCompatActivity {
 
@@ -28,6 +29,7 @@ public class AlertView extends AppCompatActivity {
         Bundle nameBundle = getIntent().getExtras();
         if(nameBundle!=null){
             appName = nameBundle.getString("msg");
+            Toast.makeText(AlertView.this,appName+": Exceeded!!!",Toast.LENGTH_SHORT).show();
         }
 
         mSkipBtn.setOnClickListener(new View.OnClickListener() {
@@ -40,7 +42,11 @@ public class AlertView extends AppCompatActivity {
         mCloseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finishAffinity();
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+                //finishAffinity();
             }
         });
     }

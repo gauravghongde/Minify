@@ -8,6 +8,7 @@ import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -34,6 +35,8 @@ public class SensorService extends Service {
     long TimeInforground;
     int minutes,seconds,hours,h=0,m=0,s=0;
     long time = System.currentTimeMillis();
+    private SharedPreferences dailyLimit;
+    private SharedPreferences contLimit;
     //ActivityManager mActivityManager =(ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
 
     public SensorService(Context applicationContext) {
@@ -56,7 +59,7 @@ public class SensorService extends Service {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 getCurrApp();
-                Toast.makeText(SensorService.this,"5 sec has passed",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SensorService.this,"5 sec has passed",Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -193,7 +196,18 @@ public class SensorService extends Service {
                         }
                     }
                     */
+                    //--------------------SHARED PREF--------------------------------------
+                    dailyLimit = getSharedPreferences("dailyLimit", Context.MODE_PRIVATE);
+                    contLimit = getSharedPreferences("contLimit", Context.MODE_PRIVATE);
+                    //---------------------------------------------------------------------
 
+                    if(dailyLimit.getInt(PackageName,Integer.MAX_VALUE)<hours*60+minutes){
+                        Intent i = new Intent(this, AlertView.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.putExtra("msg",PackageName);
+                        startActivity(i);
+                        //Toast.makeText(SensorService.this,PackageName+": Exceeded!!!",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         }

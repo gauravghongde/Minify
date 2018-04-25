@@ -24,82 +24,13 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="48dp"
-                android:text="min"
-                android:textSize="15sp"
-                app:layout_constraintStart_toEndOf="@+id/cont_min_limit"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
-                android:layout_height="21dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="48dp"
-                android:text="hr"
-                android:textSize="15sp"
-                app:layout_constraintStart_toEndOf="@+id/cont_hr_limit"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="180dp"
-                android:text="min"
-                android:textSize="15sp"
-                app:layout_constraintStart_toEndOf="@+id/daily_min_limit"
-                app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="21dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="180dp"
-                android:text="hr"
-                android:textSize="15sp"
-                app:layout_constraintStart_toEndOf="@+id/daily_hr_limit"
-                app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
-
-            <NumberPicker
-                android:id="@+id/cont_hr_limit"
-                android:layout_width="32dp"
-                android:layout_height="43dp"
-                android:layout_marginEnd="84dp"
-                android:layout_marginTop="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.36"
-                app:layout_constraintStart_toEndOf="@+id/continious_usage_alert_cb"
-                app:layout_constraintTop_toBottomOf="@+id/daily_hr_limit" />
-
-            <NumberPicker
-                android:id="@+id/cont_min_limit"
-                android:layout_width="32dp"
-                android:layout_height="43dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.473"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cont_hr_limit"
-                app:layout_constraintTop_toBottomOf="@+id/daily_min_limit" />
-
-            <TextView
                 android:id="@+id/app_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/app_setting_image_view"
                 android:layout_marginBottom="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_toEndOf="@+id/app_setting_image_view"
                 android:text="Facebook"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
@@ -107,7 +38,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/view"
                 app:layout_constraintStart_toEndOf="@+id/app_setting_image_view"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.74" />
+                app:layout_constraintVertical_bias="0.69" />
 
             <ImageView
                 android:id="@+id/app_setting_image_view"
@@ -116,7 +47,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/view"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -129,7 +60,7 @@
                 android:layout_height="0.5dp"
                 android:layout_below="@+id/app_setting_image_view"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="76dp"
+                android:layout_marginTop="78dp"
                 android:background="@color/common_google_signin_btn_text_light_default"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -324,8 +255,8 @@
                 android:id="@+id/cancel_btn"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginBottom="16dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="CANCEL"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -335,63 +266,192 @@
                 android:id="@+id/apply_btn"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="APPLY"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <NumberPicker
-                android:id="@+id/daily_hr_limit"
-                android:layout_width="32dp"
-                android:layout_height="43dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="160dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.22"
-                app:layout_constraintStart_toEndOf="@+id/daily_limit_cb"
-                app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
-
-            <NumberPicker
-                android:id="@+id/daily_min_limit"
-                android:layout_width="32dp"
-                android:layout_height="43dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="160dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.473"
-                app:layout_constraintStart_toEndOf="@+id/daily_hr_limit"
-                app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
-
-            <CheckBox
-                android:id="@+id/daily_limit_cb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="168dp"
-                android:text="Set Daily Limit "
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/week_and_day_home" />
-
-            <CheckBox
-                android:id="@+id/continious_usage_alert_cb"
-                android:layout_width="137dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="32dp"
-                android:text="Show Alert for \ncontinious usage"
+            <View
+                android:id="@+id/view5"
+                android:layout_width="293dp"
+                android:layout_height="0.5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="325dp"
+                android:background="@color/common_google_signin_btn_text_light_default"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/daily_limit_cb" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view7"
+                android:layout_width="293dp"
+                android:layout_height="0.5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="445dp"
+                android:background="@color/common_google_signin_btn_text_light_default"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="164dp"
+                android:paddingBottom="10dp"
+                app:cardElevation="0dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Switch
+                    android:id="@+id/switch1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
+                    android:text="Set Daily Usage Limit" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="21dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="96dp"
+                        android:text="hr"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toEndOf="@+id/daily_hr_limit"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="27dp"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="96dp"
+                        android:text="min"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toEndOf="@+id/daily_min_limit"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <NumberPicker
+                        android:id="@+id/daily_hr_limit"
+                        android:layout_width="32dp"
+                        android:layout_height="110dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginTop="38dp"
+                        android:fadingEdge="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <NumberPicker
+                        android:id="@+id/daily_min_limit"
+                        android:layout_width="31dp"
+                        android:layout_height="107dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="38dp"
+                        android:fadingEdge="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.189"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/daily_hr_limit"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="300dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="332dp"
+                app:cardElevation="0dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Switch
+                    android:id="@+id/switch2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
+                    android:text="Set Continuous App Usage" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="27dp"
+                        android:layout_height="22dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="min"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/progress_indicator"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.72" />
+
+                    <TextView
+                        android:id="@+id/progress_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:text="18"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.695" />
+
+                    <SeekBar
+                        android:id="@+id/cont_seek_bar"
+                        style="@style/Widget.AppCompat.SeekBar.Discrete"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:max="10"
+                        android:progress="1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.845"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.736" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
 
         </android.support.constraint.ConstraintLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

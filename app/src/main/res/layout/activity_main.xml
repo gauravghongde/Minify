@@ -6,6 +6,154 @@
     android:layout_height="match_parent"
     tools:context="com.rstack.dephone.MainActivity">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="Top 10 Most Used Apps Today"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="123dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <ImageButton
+                android:id="@+id/top_app_1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+            <ImageButton
+                android:id="@+id/top_app_2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/top_app_1"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+            <ImageButton
+                android:id="@+id/top_app_3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/top_app_2"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+            <ImageButton
+                android:id="@+id/top_app_4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/top_app_3"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+            <ImageButton
+                android:id="@+id/top_app_5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/top_app_4"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <ImageButton
+                android:id="@+id/top_app_6"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/top_app_1"
+                app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+            <ImageButton
+                android:id="@+id/top_app_7"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/top_app_6"
+                app:layout_constraintTop_toBottomOf="@+id/top_app_2"
+                app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+            <ImageButton
+                android:id="@+id/top_app_8"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/top_app_7"
+                app:layout_constraintTop_toBottomOf="@+id/top_app_3"
+                app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+            <ImageButton
+                android:id="@+id/top_app_9"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/top_app_8"
+                app:layout_constraintTop_toBottomOf="@+id/top_app_4"
+                app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
+            <ImageButton
+                android:id="@+id/top_app_10"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/top_app_9"
+                app:layout_constraintTop_toBottomOf="@+id/top_app_5"
+                app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+        </TableRow>
+
+    </TableLayout>
+
     <View
         android:id="@+id/view4"
         android:layout_width="350dp"
@@ -232,135 +380,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="Top 10 Most Used Apps Today"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view4" />
-
-    <ImageButton
-        android:id="@+id/top_app_1"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
-
-    <ImageButton
-        android:id="@+id/top_app_2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toEndOf="@+id/top_app_1"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
-
-    <ImageButton
-        android:id="@+id/top_app_3"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toEndOf="@+id/top_app_2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
-
-    <ImageButton
-        android:id="@+id/top_app_4"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toEndOf="@+id/top_app_3"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
-
-    <ImageButton
-        android:id="@+id/top_app_5"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toEndOf="@+id/top_app_4"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
-
-    <ImageButton
-        android:id="@+id/top_app_6"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_app_1"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
-
-    <ImageButton
-        android:id="@+id/top_app_7"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toEndOf="@+id/top_app_6"
-        app:layout_constraintTop_toBottomOf="@+id/top_app_2"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
-
-    <ImageButton
-        android:id="@+id/top_app_8"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toEndOf="@+id/top_app_7"
-        app:layout_constraintTop_toBottomOf="@+id/top_app_3"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
-
-    <ImageButton
-        android:id="@+id/top_app_9"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toEndOf="@+id/top_app_8"
-        app:layout_constraintTop_toBottomOf="@+id/top_app_4"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
-
-    <ImageButton
-        android:id="@+id/top_app_10"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toEndOf="@+id/top_app_9"
-        app:layout_constraintTop_toBottomOf="@+id/top_app_5"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
 
 </android.support.constraint.ConstraintLayout>

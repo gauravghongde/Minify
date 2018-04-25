@@ -24,4 +24,17 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="buttonStyle">
+        <item name="android:background">@drawable/ic_expansion_header_indicator_grey_24dp</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
