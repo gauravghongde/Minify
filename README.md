@@ -1,4 +1,4 @@
-# De-phone
+# Minify 
 
 An app to curb obsessive smartphone usage, with real-time comparison between user's actual usage stats vs the permissible amount. For every single app on smartphone, it will show, time spent, total screen on time, no of hrs used. It will also have different modes like aggressive/basic.
 #
