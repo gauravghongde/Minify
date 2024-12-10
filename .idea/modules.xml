@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Minify.iml" filepath="$PROJECT_DIR$/.idea/modules/Minify.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Minify.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Minify.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Minify.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Minify.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Minify.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Minify.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Minify.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Minify.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/dephone.iml" filepath="$PROJECT_DIR$/dephone.iml" />
     </modules>

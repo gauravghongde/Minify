@@ -7,7 +7,9 @@
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.REAL_GET_TASKS" />
+    <uses-permission
+        android:name="android.permission.REAL_GET_TASKS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
@@ -47,6 +49,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".WelcomeActivity"
+            android:exported="true"
             android:theme="@style/Theme.Fullscreen"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -56,7 +59,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".PhoneUnlockedReceiver">
+        <receiver android:name=".PhoneUnlockedReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.intent.action.ACTION_SCREEN_OFF" />
@@ -70,5 +74,12 @@
             android:name=".UsageCheckActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
 
 </manifest>

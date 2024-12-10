@@ -2,97 +2,67 @@ package com.rstack.dephone;
 
 import android.content.Context;
 import android.content.Intent;
-import java.util.ArrayList;
-import java.util.List;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 
-/**
- * Created by Juned on 4/15/2017.
- */
+import androidx.core.content.ContextCompat;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ApkInfoExtractor {
 
-    Context context1;
+    private final Context context;
 
-    public ApkInfoExtractor(Context context2){
-
-        context1 = context2;
+    public ApkInfoExtractor(Context context) {
+        this.context = context;
     }
 
-    public List<String> GetAllInstalledApkInfo(){
-
-        List<String> ApkPackageName = new ArrayList<>();
-
-        Intent intent = new Intent(Intent.ACTION_MAIN,null);
-
+    public List<String> getAllInstalledAppPackageNames() {
+        List<String> packageNames = new ArrayList<>();
+        Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED );
+        List<ResolveInfo> resolveInfoList = context.getPackageManager().queryIntentActivities(intent, 0);
 
-        List<ResolveInfo> resolveInfoList = context1.getPackageManager().queryIntentActivities(intent,0);
-
-        for(ResolveInfo resolveInfo : resolveInfoList){
-
-            ActivityInfo activityInfo = resolveInfo.activityInfo;
-
-            if(!isSystemPackage(resolveInfo)){
-
-                ApkPackageName.add(activityInfo.applicationInfo.packageName);
-            }
+        for (ResolveInfo resolveInfo : resolveInfoList) {
+            packageNames.add(resolveInfo.activityInfo.applicationInfo.packageName);
+//            TODO: Distinguish Core Service System Apps and User System Apps like Chrome, Youtube, etc
+//            if (!isSystemPackage(resolveInfo)) {
+//                packageNames.add(resolveInfo.activityInfo.applicationInfo.packageName);
+//            }
         }
 
-        return ApkPackageName;
-
+        return packageNames;
     }
 
-    public boolean isSystemPackage(ResolveInfo resolveInfo){
-
-        return ((resolveInfo.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+    public boolean isSystemPackage(ResolveInfo resolveInfo) {
+        return (resolveInfo.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
     }
 
-    public Drawable getAppIconByPackageName(String ApkTempPackageName){
-
-        Drawable drawable;
-
-        try{
-            drawable = context1.getPackageManager().getApplicationIcon(ApkTempPackageName);
-
-        }
-        catch (PackageManager.NameNotFoundException e){
-
-            e.printStackTrace();
-
-            drawable = ContextCompat.getDrawable(context1, R.mipmap.ic_launcher);
-        }
-        return drawable;
-    }
-
-    public String GetAppName(String ApkPackageName){
-
-        String Name = "";
-
-        ApplicationInfo applicationInfo;
-
-        PackageManager packageManager = context1.getPackageManager();
-
+    public Drawable getAppIconByPackageName(String packageName) {
         try {
-
-            applicationInfo = packageManager.getApplicationInfo(ApkPackageName, 0);
-
-            if(applicationInfo!=null){
-
-                Name = (String)packageManager.getApplicationLabel(applicationInfo);
-            }
-
-        }catch (PackageManager.NameNotFoundException e) {
-
+            return context.getPackageManager().getApplicationIcon(packageName);
+        } catch (PackageManager.NameNotFoundException e) {
+            // Use a logging library like Timber here instead of e.printStackTrace()
             e.printStackTrace();
+            return ContextCompat.getDrawable(context, R.mipmap.ic_launcher);
         }
-        return Name;
+    }
+
+    public String getAppName(String packageName) {
+        String UNKNOWN = "UNKNOWN APP";
+        try {
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(packageName, 0);
+            return applicationInfo != null ? (String) context.getPackageManager().getApplicationLabel(applicationInfo) : UNKNOWN;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Use a logging library like Timber here instead of e.printStackTrace()
+            e.printStackTrace();
+            return UNKNOWN;
+        }
     }
 }

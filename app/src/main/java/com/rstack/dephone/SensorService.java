@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,6 +25,8 @@ import java.util.TimerTask;
 import java.util.TreeMap;
 
 import static android.app.Service.START_STICKY;
+
+import androidx.annotation.Nullable;
 
 public class SensorService extends Service {
     public int mcounter=0;

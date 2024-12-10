@@ -3,14 +3,16 @@ package com.rstack.dephone;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.ImageView;
-import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 import android.view.View;
 import android.widget.TextView;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
@@ -59,7 +61,7 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
         ApkInfoExtractor apkInfoExtractor = new ApkInfoExtractor(context1);
 
         final String ApplicationPackageName = (String) stringList.get(position);
-        final String ApplicationLabelName = apkInfoExtractor.GetAppName(ApplicationPackageName);
+        final String ApplicationLabelName = apkInfoExtractor.getAppName(ApplicationPackageName);
         Drawable drawable = apkInfoExtractor.getAppIconByPackageName(ApplicationPackageName);
 
         viewHolder.textView_App_Name.setText(ApplicationLabelName);

@@ -1,37 +1,41 @@
 package com.rstack.dephone;
 
-import android.app.ActionBar;
+import static android.app.AppOpsManager.MODE_ALLOWED;
+import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
+
+import android.Manifest;
+import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import android.app.ActivityManager;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.Calendar;
 import java.util.Iterator;
@@ -44,15 +48,15 @@ import java.util.TreeMap;
 import static android.app.AppOpsManager.MODE_ALLOWED;
 import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
 
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+    private static final int MAX_TOP_APPS = 10;
 
     private Button mButSetting;
     private Switch alertPauseSwitch;
     private TextView mHourDay,mMinDay,mHourWeek,mMinWeek,nse_exception;
     DatabaseClass dbClass = new DatabaseClass();
     Intent mServiceIntent;
-    Intent webintent;
+    Intent mNotificationDrawer;
     ApkInfoExtractor apkInfoExtractor = new ApkInfoExtractor(this);
     ImageButton[] ib = new ImageButton[10];
     String [] top10Apps = new String [10];
@@ -73,39 +77,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
-                R.string.navigation_drawer_open,R.string.navigation_drawer_close){
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                drawerView.bringToFront();
-                super.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                super.onDrawerSlide(drawerView, slideOffset);
-            }
-        };
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
         if(!checkForPermission(MainActivity.this)){
             Intent UsageCheckAct = new Intent(MainActivity.this, UsageCheckActivity.class);
             startActivity(UsageCheckAct);
             finish();
         }
+
+        toggleActionBar();
 
         /*Intent i = new Intent(this, AlertView.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -373,6 +351,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void toggleActionBar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
+                R.string.navigation_drawer_open,R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                drawerView.bringToFront();
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+            }
+        };
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -425,50 +433,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent i = new Intent(v.getContext(), AppWiseSettingActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        switch (v.getId()){
-            case R.id.top_app_1:
-                i.putExtra("app_name",apkInfoExtractor.GetAppName(top10Apps[0]));
-                i.putExtra("package_name",top10Apps[0]);
-                break;
-            case R.id.top_app_2:
-                i.putExtra("app_name",apkInfoExtractor.GetAppName(top10Apps[1]));
-                i.putExtra("package_name",top10Apps[1]);
-                break;
-            case R.id.top_app_3:
-                i.putExtra("app_name",apkInfoExtractor.GetAppName(top10Apps[2]));
-                i.putExtra("package_name",top10Apps[2]);
-                break;
-            case R.id.top_app_4:
-                i.putExtra("app_name",apkInfoExtractor.GetAppName(top10Apps[3]));
-                i.putExtra("package_name",top10Apps[3]);
-                break;
-            case R.id.top_app_5:
-                i.putExtra("app_name",apkInfoExtractor.GetAppName(top10Apps[4]));
-                i.putExtra("package_name",top10Apps[4]);
-                break;
-            case R.id.top_app_6:
-                i.putExtra("app_name",apkInfoExtractor.GetAppName(top10Apps[5]));
-                i.putExtra("package_name",top10Apps[5]);
-                break;
-            case R.id.top_app_7:
-                i.putExtra("app_name",apkInfoExtractor.GetAppName(top10Apps[6]));
-                i.putExtra("package_name",top10Apps[6]);
-                break;
-            case R.id.top_app_8:
-                i.putExtra("app_name",apkInfoExtractor.GetAppName(top10Apps[7]));
-                i.putExtra("package_name",top10Apps[7]);
-                break;
-            case R.id.top_app_9:
-                i.putExtra("app_name",apkInfoExtractor.GetAppName(top10Apps[8]));
-                i.putExtra("package_name",top10Apps[8]);
-                break;
-            case R.id.top_app_10:
-                i.putExtra("app_name",apkInfoExtractor.GetAppName(top10Apps[9]));
-                i.putExtra("package_name",top10Apps[9]);
-                break;
-            default:
-                break;
+        int[] viewIds = new int[MAX_TOP_APPS];
+        for (int j = 0; j < MAX_TOP_APPS; j++) {
+            viewIds[j] = getResources().getIdentifier("top_app_" + (j + 1), "id", getPackageName());
         }
+
+        for (int j = 0; j < MAX_TOP_APPS; j++) {
+            if (v.getId() == viewIds[j]) {
+                i.putExtra("app_name", apkInfoExtractor.getAppName(top10Apps[j]));
+                i.putExtra("package_name", top10Apps[j]);
+                break;
+            }
+        }
+
         v.getContext().startActivity(i);
     }
 
@@ -476,52 +453,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         drawer.closeDrawer(GravityCompat.START);
-        switch(id){
-            case R.id.nav_applist:
-                Intent settingsPage = new Intent(MainActivity.this,AppSettingsActivity.class);
-                startActivity(settingsPage);
-                finish();
-                break;
-            case R.id.nav_feedback:
-                Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"777gaurav.g7@gmail.com"});
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Minify - Feedback");
-                emailIntent.setType("text/plain");
-                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "\n");
-                final PackageManager pm = MainActivity.this.getPackageManager();
-                final List<ResolveInfo> matches = pm.queryIntentActivities(emailIntent, 0);
-                ResolveInfo best = null;
-                for(final ResolveInfo info : matches)
-                    if (info.activityInfo.packageName.endsWith(".gm") || info.activityInfo.name.toLowerCase().contains("gmail"))
-                        best = info;
-                if (best != null)
-                    emailIntent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
-                MainActivity.this.startActivity(emailIntent);
-                break;
-            case R.id.nav_share:
-                String textToSend;
-                textToSend = "Hey There! I am using this awesome app called 'Minify'. " +
-                        "It helps to reduce Smartphone usage, by providing App Usage Alerts and Usage Statistics. " +
-                        "We can set Timers on every app and restrict our daily usage. You could save a lot of precious time " +
-                        "and focus on essentials, Download it now! \n\nGet the App from - " +
-                        "https://play.google.com/store/apps/details?id=com.rstack.dephone&hl=en";
-                Intent intentShare = new Intent();
-                intentShare.setAction(Intent.ACTION_SEND);
-                intentShare.putExtra(Intent.EXTRA_TEXT, textToSend);
-                intentShare.setType("text/plain");
-                startActivity(Intent.createChooser(intentShare,"Share via - "));
-                break;
-            case R.id.nav_git:
-                webintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/gauravghongde/Minify"));
-                startActivity(webintent);
-                break;
-            case R.id.nav_website:
-                webintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://gauravghongde.github.io/portfolio/"));
-                startActivity(webintent);
-                break;
-            default:
-                break;
+        if (id == R.id.nav_applist) {
+            navigateToAppSettings();
+        } else if (id == R.id.nav_feedback) {
+            sendFeedbackEmail();
+        } else if (id == R.id.nav_share) {
+            shareApp();
+        } else if (id == R.id.nav_git) {
+            openGithubRepo();
+        } else if (id == R.id.nav_website) {
+            openPersonalWebsite();
         }
         return true;
+    }
+
+// Helper methods
+
+    private void navigateToAppSettings() {
+        Intent intent = new Intent(MainActivity.this, AppSettingsActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void sendFeedbackEmail() {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"777gaurav.g7@gmail.com"});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Minify - Feedback");
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "\n");
+        resolveEmailIntent(emailIntent);
+        startActivity(emailIntent);
+    }
+
+    private void resolveEmailIntent(Intent emailIntent) {
+        final PackageManager pm = getPackageManager();
+        final List<ResolveInfo> matches = pm.queryIntentActivities(emailIntent, 0);
+        ResolveInfo best = null;
+        for (final ResolveInfo info : matches)
+            if (info.activityInfo.packageName.endsWith(".gm") || info.activityInfo.name.toLowerCase().contains("gmail"))
+                best = info;
+        if (best != null)
+            emailIntent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
+    }
+
+    private void shareApp() {
+        String textToSend = "Hey There! I am using this awesome app called 'Minify'. " +
+                "It helps to reduce Smartphone usage, by providing App Usage Alerts and Usage Statistics. " +
+                "We can set Timers on every app and restrict our daily usage. You could save a lot of precious time " +
+                "and focus on essentials, Download it now! \n\nGet the App from - " +
+                "https://play.google.com/store/apps/details?id=com.rstack.dephone&hl=en";
+        Intent intentShare = new Intent();
+        intentShare.setAction(Intent.ACTION_SEND);
+        intentShare.putExtra(Intent.EXTRA_TEXT, textToSend);
+        intentShare.setType("text/plain");
+        startActivity(Intent.createChooser(intentShare, "Share via - "));
+    }
+
+    private void openGithubRepo() {
+        Intent webintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/gauravghongde/Minify"));
+        startActivity(webintent);
+    }
+
+    private void openPersonalWebsite() {
+        Intent webintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://gauravghongde.github.io/portfolio/"));
+        startActivity(webintent);
     }
 }
