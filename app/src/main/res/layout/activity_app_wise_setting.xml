@@ -389,11 +389,11 @@
                     android:id="@+id/switch2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="5dp"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
                     android:paddingTop="10dp"
-                    android:text="Set Continuous App Usage" />
+                    android:paddingRight="20dp"
+                    android:paddingBottom="5dp"
+                    android:text="Set Continuous Usage Limit" />
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"

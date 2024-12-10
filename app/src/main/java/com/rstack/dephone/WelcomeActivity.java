@@ -4,6 +4,7 @@ import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,6 +30,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private Button mGetStarted;
     private CheckBox mTnCchkBox;
+    private TextView mTermsBtn;
 
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -40,6 +43,15 @@ public class WelcomeActivity extends AppCompatActivity {
         mGetStarted = findViewById(R.id.get_sarted_btn);
         mTnCchkBox = findViewById(R.id.tandc_chkbox);
         mGetStarted.setEnabled(false);
+        mTermsBtn = findViewById(R.id.termsWebsiteLabel);
+
+        mTermsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent webintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://gauravghongde.github.io/portfolio/Minify/terms"));
+                startActivity(webintent);
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_sharp_home_24px"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_applist"
+            android:icon="@drawable/ic_sharp_list_24px"
+            android:title="Installed Apps" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/ic_sharp_feedback_24px"
+                android:title="Send Feedback" />
+            <item
+                android:id="@+id/nav_git"
+                android:icon="@drawable/ic_github_icon"
+                android:title="Fork on GitHub" />
+            <item
+                android:id="@+id/nav_website"
+                android:icon="@drawable/ic_sharp_public_24px"
+                android:title="Visit Website" />
+        </menu>
+    </item>
+
+    <item android:title="Help Us">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_sharp_share_24px"
+                android:title="Share this App" />
+
+        </menu>
+    </item>
+
+</menu>

@@ -2,6 +2,8 @@ package com.rstack.dephone;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +17,7 @@ public class AlertView extends AppCompatActivity {
     Button mSkipBtn,mCloseBtn;
     Context ctx;
     Intent i=getIntent();
-    String appName;
+    String appName,pkgName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +27,20 @@ public class AlertView extends AppCompatActivity {
         mSkipBtn = findViewById(R.id.skip_alert_btn);
         mCloseBtn = findViewById(R.id.close_app_btn);
         ctx=this;
+        final PackageManager pm = getApplicationContext().getPackageManager();
+        ApplicationInfo ai;
 
         Bundle nameBundle = getIntent().getExtras();
         if(nameBundle!=null){
-            appName = nameBundle.getString("msg");
+            pkgName = nameBundle.getString("msg");
+            try{
+                ai = pm.getApplicationInfo(pkgName,0);
+            } catch (PackageManager.NameNotFoundException e) {
+                ai = null;
+            }
+
+            appName = (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
+
             Toast.makeText(AlertView.this,appName+": Exceeded!!!",Toast.LENGTH_SHORT).show();
         }
 

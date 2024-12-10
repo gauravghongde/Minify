@@ -1,11 +1,21 @@
 package com.rstack.dephone;
 
+import android.app.ActionBar;
+import android.app.AppOpsManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,28 +23,44 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.SortedMap;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
+import static android.app.AppOpsManager.MODE_ALLOWED;
+import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
 
     private Button mButSetting;
-    private TextView mHourDay,mMinDay,mHourWeek,mMinWeek;
+    private Switch alertPauseSwitch;
+    private TextView mHourDay,mMinDay,mHourWeek,mMinWeek,nse_exception;
     DatabaseClass dbClass = new DatabaseClass();
     Intent mServiceIntent;
+    Intent webintent;
     ApkInfoExtractor apkInfoExtractor = new ApkInfoExtractor(this);
     ImageButton[] ib = new ImageButton[10];
     String [] top10Apps = new String [10];
     TreeMap<Long,String> treeMap = new TreeMap<>();
+
+    public ActionBarDrawerToggle mDrawerToggle;
+    DrawerLayout drawer;
+    NavigationView navigationView;
 
     Context ctx;
 
@@ -46,6 +72,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
+                R.string.navigation_drawer_open,R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                drawerView.bringToFront();
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+            }
+        };
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        if(!checkForPermission(MainActivity.this)){
+            Intent UsageCheckAct = new Intent(MainActivity.this, UsageCheckActivity.class);
+            startActivity(UsageCheckAct);
+            finish();
+        }
 
         /*Intent i = new Intent(this, AlertView.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -63,13 +123,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //--------------------SHARED PREF-------------------------------------------------------------
 
-        SharedPreferences dailyLimit = getSharedPreferences("dailyLimit", Context.MODE_PRIVATE);
-        SharedPreferences.Editor dailyLimitEditor = dailyLimit.edit();
+        final SharedPreferences dailyLimit = getSharedPreferences("dailyLimit", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor dailyLimitEditor = dailyLimit.edit();
         SharedPreferences contLimit = getSharedPreferences("contLimit", Context.MODE_PRIVATE);
         SharedPreferences.Editor contLimitEditor =contLimit.edit();
 
         //--------------------------------------------------------------------------------------------
 
+        //--------------------SHARED PREF-------------------------------------------------------------
+
+        final SharedPreferences spForPauseSwitch = getSharedPreferences("spForPauseSwitch", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor spPauseSwitchEditor = spForPauseSwitch.edit();
+
+        //---------------------------------------------------------------------------------------------
 
         PhoneUnlockedReceiver receiver = new PhoneUnlockedReceiver();
         IntentFilter filter = new IntentFilter();
@@ -78,7 +144,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerReceiver(receiver, filter);
 
         ctx = this;
-        mButSetting = findViewById(R.id.settings);
+
+        alertPauseSwitch = findViewById(R.id.mainSwitch);
+        nse_exception = findViewById(R.id.top_ten_exception_txt);
+        //mButSetting = findViewById(R.id.settings);
         //mDailyUnlocks = findViewById(R.id.total_unlocks_daily);
         mHourDay = findViewById(R.id.hour_day);
         mMinDay = findViewById(R.id.min_day);
@@ -112,6 +181,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         long howMany = c.getTimeInMillis();
         Log.i("midnighttime",Long.toString(howMany)+" "+Long.toString(time));
 
+        //TimeZone tz = TimeZone.getDefault();
+        //String gmt1=TimeZone.getTimeZone(tz.getID()).getDisplayName(false,TimeZone.SHORT);
+        //String gmt2=TimeZone.getTimeZone(tz.getID()).getDisplayName(false,TimeZone.LONG);
+        Log.d("currenttime","Time : "+time);
+
         List<UsageStats> stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time-10*1000, time);
         if(stats != null) {
             SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
@@ -140,10 +214,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 spForDayEditor.apply();
 
                 /////////////////////////////////////////////////////////////////////////////////
-                dailyLimitEditor.putInt(PackageName,Integer.MAX_VALUE);
-                dailyLimitEditor.apply();
-                contLimitEditor.putInt(PackageName,Integer.MAX_VALUE);
-                contLimitEditor.apply();
+
+                int userData1 = dailyLimit.getInt(PackageName, Integer.MAX_VALUE);
+                if((userData1 == Integer.MAX_VALUE)){
+                    //not been saved...
+                    dailyLimitEditor.putInt(PackageName,Integer.MAX_VALUE);
+                    dailyLimitEditor.apply();
+                }
+                else{
+                    // already there...
+                }
+
+                int userData2 = contLimit.getInt(PackageName, Integer.MAX_VALUE);
+                if((userData1 == Integer.MAX_VALUE)){
+                    //not been saved...
+                    contLimitEditor.putInt(PackageName,Integer.MAX_VALUE);
+                    contLimitEditor.apply();
+                }
+                else{
+                    // already there...
+                }
+
                 /////////////////////////////////////////////////////////////////////////////////
 
                 treeMap.put(TimeInforground,PackageName);
@@ -156,16 +247,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mHourDay.setText(Integer.toString(h));
         mMinDay.setText(Integer.toString(m));
 
-        Drawable drawable;
-        //For Top 10 app list on the basis of daily usage
-        Iterator<Long> iterator = treeMap.descendingKeySet().iterator();
-        for(int i=0; i<=9; i++){
-            Long mapEntry = iterator.next();
-            Log.d("iterator123",mapEntry.toString()+" "+treeMap.get(mapEntry));
-            drawable = apkInfoExtractor.getAppIconByPackageName(treeMap.get(mapEntry));
-            ib[i].setImageDrawable(drawable);
-            ib[i].setOnClickListener(MainActivity.this);
-            top10Apps[i] = treeMap.get(mapEntry);
+        try {
+            Drawable drawable;
+            nse_exception.setVisibility(View.GONE);
+            //For Top 10 app list on the basis of daily usage
+            Iterator<Long> iterator = treeMap.descendingKeySet().iterator();
+            for (int i = 0; i <= 9; i++) {
+                ib[i].setVisibility(View.VISIBLE);
+                Long mapEntry = iterator.next();
+                Log.d("iterator123", mapEntry.toString() + " " + treeMap.get(mapEntry));
+                drawable = apkInfoExtractor.getAppIconByPackageName(treeMap.get(mapEntry));
+                ib[i].setImageDrawable(drawable);
+                ib[i].setOnClickListener(MainActivity.this);
+                top10Apps[i] = treeMap.get(mapEntry);
+            }
+
+        }
+        catch (NoSuchElementException nse){
+            nse_exception.setVisibility(View.VISIBLE);
+            for (int i = 0; i <= 9; i++) {
+                ib[i].setVisibility(View.GONE);
+            }
         }
 
         h=0;
@@ -216,13 +318,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //mDailyUsage.setText(Integer.toString(h)+"hr "+Integer.toString(m)+"min "+Integer.toString(s)+"sec");
 
-        mButSetting.setOnClickListener(new View.OnClickListener() {
+        int isSwitchChecked = spForPauseSwitch.getInt("chkStatus", -1);
+        if((isSwitchChecked == -1)){
+            //not been saved...
+            alertPauseSwitch.setChecked(false);
+            spPauseSwitchEditor.putInt("chkStatus",0);
+            spPauseSwitchEditor.apply();
+        }
+        else{
+            if(isSwitchChecked==1){
+                alertPauseSwitch.setChecked(true);
+                spPauseSwitchEditor.putInt("chkStatus",1);
+                spPauseSwitchEditor.apply();
+            }
+            else{
+                alertPauseSwitch.setChecked(false);
+                spPauseSwitchEditor.putInt("chkStatus",0);
+                spPauseSwitchEditor.apply();
+            }
+        }
+
+
+
+        alertPauseSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(alertPauseSwitch.isChecked()){
+                    spPauseSwitchEditor.putInt("chkStatus",1);
+                    spPauseSwitchEditor.apply();
+                }
+                else{
+                    spPauseSwitchEditor.putInt("chkStatus",0);
+                    spPauseSwitchEditor.apply();
+                }
+            }
+        });
+
+        /*mButSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent settingsPage = new Intent(MainActivity.this,AppSettingsActivity.class);
                 startActivity(settingsPage);
             }
-        });
+        });*/
 
 
         SensorService mSensorService = new SensorService(getCtx());
@@ -230,6 +368,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!isMyServiceRunning(mSensorService.getClass())) {   //starts if isn't already running
             startService(mServiceIntent);
         }
+
+        //mNotificationDrawer = new Intent(this.getCtx(), NotificationDrawerActivity.class);
 
     }
 
@@ -248,8 +388,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else {
+            super.onBackPressed();
+            finish();
+        }
     }
 
     @Override
@@ -262,7 +407,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStop();
     }
 
-
+    private boolean checkForPermission(Context context) {
+        AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+        int mode = appOps.checkOpNoThrow(OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), context.getPackageName());
+        return mode == MODE_ALLOWED;
+    }
 
     @Override
     protected void onDestroy() {
@@ -321,5 +470,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
         v.getContext().startActivity(i);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        drawer.closeDrawer(GravityCompat.START);
+        switch(id){
+            case R.id.nav_applist:
+                Intent settingsPage = new Intent(MainActivity.this,AppSettingsActivity.class);
+                startActivity(settingsPage);
+                finish();
+                break;
+            case R.id.nav_feedback:
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"777gaurav.g7@gmail.com"});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Minify - Feedback");
+                emailIntent.setType("text/plain");
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "\n");
+                final PackageManager pm = MainActivity.this.getPackageManager();
+                final List<ResolveInfo> matches = pm.queryIntentActivities(emailIntent, 0);
+                ResolveInfo best = null;
+                for(final ResolveInfo info : matches)
+                    if (info.activityInfo.packageName.endsWith(".gm") || info.activityInfo.name.toLowerCase().contains("gmail"))
+                        best = info;
+                if (best != null)
+                    emailIntent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
+                MainActivity.this.startActivity(emailIntent);
+                break;
+            case R.id.nav_share:
+                String textToSend;
+                textToSend = "Hey There! I am using this awesome app called 'Minify'. " +
+                        "It helps to reduce Smartphone usage, by providing App Usage Alerts and Usage Statistics. " +
+                        "We can set Timers on every app and restrict our daily usage. You could save a lot of precious time " +
+                        "and focus on essentials, Download it now! \n\nGet the App from - " +
+                        "https://play.google.com/store/apps/details?id=com.rstack.dephone&hl=en";
+                Intent intentShare = new Intent();
+                intentShare.setAction(Intent.ACTION_SEND);
+                intentShare.putExtra(Intent.EXTRA_TEXT, textToSend);
+                intentShare.setType("text/plain");
+                startActivity(Intent.createChooser(intentShare,"Share via - "));
+                break;
+            case R.id.nav_git:
+                webintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/gauravghongde/Minify"));
+                startActivity(webintent);
+                break;
+            case R.id.nav_website:
+                webintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://gauravghongde.github.io/portfolio/"));
+                startActivity(webintent);
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }

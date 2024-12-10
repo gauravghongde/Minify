@@ -52,7 +52,7 @@ public class SensorService extends Service {
         super.onStartCommand(intent, flags, startId);
         //int counter=0;
 
-        Toast.makeText(SensorService.this,"started",Toast.LENGTH_LONG).show();
+        //Toast.makeText(SensorService.this,"started",Toast.LENGTH_LONG).show();
 
         final Handler handler = new Handler(){
             @Override
@@ -142,14 +142,14 @@ public class SensorService extends Service {
         }
         if(!usageEvents.hasNextEvent() && !PackageName.equalsIgnoreCase("com.rstack.dephone")
                 ){
-            Log.i("BAC123", "PackageName is " + PackageName + "is running");
+            //Log.i("BAC123", "PackageName is " + PackageName + "is running");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             mcounter++;
-            Log.i("BAC123456", "counter: "+ mcounter);
+            //Log.i("BAC123456", "counter: "+ mcounter);
             if(mcounter>=10){
                 Intent i = new Intent(this, AlertView.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -163,7 +163,7 @@ public class SensorService extends Service {
                 TimeInforground = usageStats.getTotalTimeInForeground();
                 ChkPackageName = usageStats.getPackageName();
                 if(ChkPackageName.equalsIgnoreCase(PackageName)) {
-                    Log.i("pkg_name", "PackageName is" + PackageName);
+                    //Log.i("pkg_name", "PackageName is" + PackageName);
 
                     minutes = (int) ((TimeInforground / (1000 * 60)) % 60);
                     seconds = (int) (TimeInforground / 1000) % 60;
@@ -181,7 +181,7 @@ public class SensorService extends Service {
                         s = s % 60;
                     }
 
-                    Log.i("BAC123", "PackageName is " + ChkPackageName + " Time is: " + hours + "h" + ":" + minutes + "m" + seconds + "s");
+                    //Log.i("BAC123", "PackageName is " + ChkPackageName + " Time is: " + hours + "h" + ":" + minutes + "m" + seconds + "s");
                     //TODO:
                     // check hasLimit()
                     // chk less than limit

@@ -17,7 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <!-- create service -->
 
         <service
@@ -38,11 +40,15 @@
 
         <activity
             android:name=".AlertView"
-            android:theme="@style/Theme.Transparent" />
-        <activity android:name=".AppSettingsActivity" />
+            android:theme="@style/Theme.Transparent"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AppSettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".WelcomeActivity"
-            android:theme="@style/Theme.Fullscreen">
+            android:theme="@style/Theme.Fullscreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,7 +65,10 @@
 
         <activity
             android:name=".AppWiseSettingActivity"
-            android:theme="@style/Theme.Transparent"></activity>
+            android:theme="@style/Theme.Transparent" />
+        <activity
+            android:name=".UsageCheckActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
