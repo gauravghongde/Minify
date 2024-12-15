@@ -119,30 +119,24 @@ public class AppWiseSettingActivity extends AppCompatActivity {
         mHourWeek.setText(Integer.toString(totalMinutes / 60));
         mMinWeek.setText(Integer.toString((int) totalMinutes % 60));
 
-        dailyUsageLimitSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!dailyUsageLimitSwitch.isChecked()) {
-                    dailyMinLimit.setEnabled(false);
-                    dailyHrLimit.setEnabled(false);
-                    dailyHrLimit.setValue(0);
-                    dailyMinLimit.setValue(10);
-                } else {
-                    dailyMinLimit.setEnabled(true);
-                    dailyHrLimit.setEnabled(true);
-                }
+        dailyUsageLimitSwitch.setOnClickListener(v -> {
+            if (!dailyUsageLimitSwitch.isChecked()) {
+                dailyMinLimit.setEnabled(false);
+                dailyHrLimit.setEnabled(false);
+                dailyHrLimit.setValue(0);
+                dailyMinLimit.setValue(10);
+            } else {
+                dailyMinLimit.setEnabled(true);
+                dailyHrLimit.setEnabled(true);
             }
         });
 
-        continuousUsageLimitSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!continuousUsageLimitSwitch.isChecked()) {
-                    seekbar.setEnabled(false);
-                    progressValue = 1;
-                } else {
-                    seekbar.setEnabled(true);
-                }
+        continuousUsageLimitSwitch.setOnClickListener(v -> {
+            if (!continuousUsageLimitSwitch.isChecked()) {
+                seekbar.setEnabled(false);
+                progressValue = 1;
+            } else {
+                seekbar.setEnabled(true);
             }
         });
 
@@ -169,41 +163,33 @@ public class AppWiseSettingActivity extends AppCompatActivity {
             }
         });
 
-        mApplyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dailyUsageLimitSwitch.isChecked()) {
-                    int totalDailyLimitMin = dailyHrLimit.getValue() * 60 + dailyMinLimit.getValue();
-                    dailyLimitEditor.putInt(pkgName, totalDailyLimitMin);
-                    Toast.makeText(AppWiseSettingActivity.this, appName + ": " + totalDailyLimitMin, Toast.LENGTH_SHORT).show();
-                    dailyLimitEditor.apply();
-                } else {
-                    int totalDailyLimitMin = Integer.MAX_VALUE;
-                    dailyLimitEditor.putInt(pkgName, totalDailyLimitMin);
+        mApplyBtn.setOnClickListener(v -> {
+            if (dailyUsageLimitSwitch.isChecked()) {
+                int totalDailyLimitMin = dailyHrLimit.getValue() * 60 + dailyMinLimit.getValue();
+                dailyLimitEditor.putInt(pkgName, totalDailyLimitMin);
+                Toast.makeText(AppWiseSettingActivity.this, appName + ": " + totalDailyLimitMin, Toast.LENGTH_SHORT).show();
+                dailyLimitEditor.apply();
+            } else {
+                int totalDailyLimitMin = Integer.MAX_VALUE;
+                dailyLimitEditor.putInt(pkgName, totalDailyLimitMin);
 //                    Toast.makeText(AppWiseSettingActivity.this, appName + ": " + totalDailyLimitMin, Toast.LENGTH_SHORT).show();
-                    dailyLimitEditor.apply();
-                }
+                dailyLimitEditor.apply();
+            }
 
-                if (continuousUsageLimitSwitch.isChecked()) {
-                    contLimitEditor.putInt(pkgName, progressValue);
-                    Toast.makeText(AppWiseSettingActivity.this, appName + ": " + progressValue, Toast.LENGTH_SHORT).show();
-                    contLimitEditor.apply();
-                } else {
-                    contLimitEditor.putInt(pkgName, Integer.MAX_VALUE);
+            if (continuousUsageLimitSwitch.isChecked()) {
+                contLimitEditor.putInt(pkgName, progressValue);
+                Toast.makeText(AppWiseSettingActivity.this, appName + ": " + progressValue, Toast.LENGTH_SHORT).show();
+                contLimitEditor.apply();
+            } else {
+                contLimitEditor.putInt(pkgName, Integer.MAX_VALUE);
 //                    Toast.makeText(AppWiseSettingActivity.this, appName + ": " + progressValue, Toast.LENGTH_SHORT).show();
-                    contLimitEditor.apply();
-                }
-
-                finish();
+                contLimitEditor.apply();
             }
+
+            finish();
         });
 
-        mCancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        mCancelBtn.setOnClickListener(v -> finish());
 
     }
 }

@@ -3,7 +3,6 @@ package com.rstack.dephone;
 import static android.app.AppOpsManager.MODE_ALLOWED;
 import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
 
-import android.Manifest;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.app.usage.UsageStats;
@@ -11,8 +10,6 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
@@ -30,8 +27,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -41,34 +36,34 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.SortedMap;
-import java.util.TimeZone;
 import java.util.TreeMap;
 
-import static android.app.AppOpsManager.MODE_ALLOWED;
-import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     private static final int MAX_TOP_APPS = 10;
 
     private Button mButSetting;
     private Switch alertPauseSwitch;
-    private TextView mHourDay,mMinDay,mHourWeek,mMinWeek,nse_exception;
+    private TextView mHourDay, mMinDay, mHourWeek, mMinWeek, nse_exception;
     DatabaseClass dbClass = new DatabaseClass();
     Intent mServiceIntent;
     Intent mNotificationDrawer;
     ApkInfoExtractor apkInfoExtractor = new ApkInfoExtractor(this);
     ImageButton[] ib = new ImageButton[10];
-    String [] top10Apps = new String [10];
-    TreeMap<Long,String> treeMap = new TreeMap<>();
+    String[] top10Apps = new String[10];
+    TreeMap<Long, String> treeMap = new TreeMap<>();
 
     public ActionBarDrawerToggle mDrawerToggle;
     DrawerLayout drawer;
     NavigationView navigationView;
+    List<String> allInstalledAppPackageNames;
+    private PhoneUnlockedReceiver phoneUnlockedReceiver;
 
+    UsageStatsManager mUsageStatsManager;
+    SharedPrefsHelper prefsHelper;
     Context ctx;
 
-    public Context getCtx(){
+    public Context getCtx() {
         return ctx;
     }
 
@@ -76,50 +71,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        prefsHelper = SharedPrefsHelper.getInstance(this);
+        mUsageStatsManager = (UsageStatsManager) getSystemService(USAGE_STATS_SERVICE);
+        allInstalledAppPackageNames = new ApkInfoExtractor(this).getAllInstalledAppPackageNames();
 
-        if(!checkForPermission(MainActivity.this)){
-            Intent UsageCheckAct = new Intent(MainActivity.this, UsageCheckActivity.class);
-            startActivity(UsageCheckAct);
+        if (!checkForPermission(this)) {
+            startActivity(new Intent(this, UsageCheckActivity.class));
             finish();
         }
 
         toggleActionBar();
 
-        /*Intent i = new Intent(this, AlertView.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);*/
-        //startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-
-        //--------------------SHARED PREF-------------------------------------------------------------
-
-        SharedPreferences spForDay = getSharedPreferences("dataForDay", Context.MODE_PRIVATE);
-        SharedPreferences.Editor spForDayEditor = spForDay.edit();
-        SharedPreferences spForWeek = getSharedPreferences("dataForWeek", Context.MODE_PRIVATE);
-        SharedPreferences.Editor spForWeekEditor = spForWeek.edit();
-
-        //--------------------------------------------------------------------------------------------
-
-        //--------------------SHARED PREF-------------------------------------------------------------
-
-        final SharedPreferences dailyLimit = getSharedPreferences("dailyLimit", Context.MODE_PRIVATE);
-        final SharedPreferences.Editor dailyLimitEditor = dailyLimit.edit();
-        SharedPreferences contLimit = getSharedPreferences("contLimit", Context.MODE_PRIVATE);
-        SharedPreferences.Editor contLimitEditor =contLimit.edit();
-
-        //--------------------------------------------------------------------------------------------
-
-        //--------------------SHARED PREF-------------------------------------------------------------
-
-        final SharedPreferences spForPauseSwitch = getSharedPreferences("spForPauseSwitch", Context.MODE_PRIVATE);
-        final SharedPreferences.Editor spPauseSwitchEditor = spForPauseSwitch.edit();
-
-        //---------------------------------------------------------------------------------------------
-
-        PhoneUnlockedReceiver receiver = new PhoneUnlockedReceiver();
+        phoneUnlockedReceiver = new PhoneUnlockedReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_USER_PRESENT);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
-        registerReceiver(receiver, filter);
+        registerReceiver(phoneUnlockedReceiver, filter);
 
         ctx = this;
 
@@ -143,88 +110,126 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ib[8] = findViewById(R.id.top_app_9);
         ib[9] = findViewById(R.id.top_app_10);
 
-        UsageStatsManager mUsageStatsManager = (UsageStatsManager)getSystemService(this.USAGE_STATS_SERVICE);
         //UsageStats usageStats;
-        String PackageName = "Nothing" ;
+        long time = Calendar.getInstance().getTimeInMillis();
+        Log.d("currenttime", "Time : " + time);
+
+        setDailyLimit(time);
+        setWeeklyLimit(time);
+
+        displayTop10();
+        configurePauseSwitch();
+    }
+
+    private void setDailyLimit(long time) {
         long TimeInforground;
-        int minutes,seconds,hours,h=0,m=0,s=0;
-        long time = System.currentTimeMillis();
+        int minutes;
+        String usageApiPackageName;
+        int hours;
+        int seconds;
+        int h = 0, m = 0, s = 0;
 
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_MONTH,1);
-        c.add(Calendar.HOUR_OF_DAY,0);
-        c.add(Calendar.MINUTE,0);
-        c.add(Calendar.SECOND,0);
-        c.add(Calendar.MILLISECOND,0);
-        long howMany = c.getTimeInMillis();
-        Log.i("midnighttime",Long.toString(howMany)+" "+Long.toString(time));
-
-        //TimeZone tz = TimeZone.getDefault();
-        //String gmt1=TimeZone.getTimeZone(tz.getID()).getDisplayName(false,TimeZone.SHORT);
-        //String gmt2=TimeZone.getTimeZone(tz.getID()).getDisplayName(false,TimeZone.LONG);
-        Log.d("currenttime","Time : "+time);
-
-        List<UsageStats> stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time-10*1000, time);
-        if(stats != null) {
-            SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
+        List<UsageStats> stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 10 * 1000, time);
+        if (stats != null) {
             for (UsageStats usageStats : stats) {
+                usageApiPackageName = usageStats.getPackageName();
+                Log.i("pkg_name", "PackageName is" + usageApiPackageName);
                 TimeInforground = usageStats.getTotalTimeInForeground();
-                PackageName = usageStats.getPackageName();
-                Log.i("pkg_name", "PackageName is" + PackageName);
 
                 minutes = (int) ((TimeInforground / (1000 * 60)) % 60);
                 seconds = (int) (TimeInforground / 1000) % 60;
                 hours = (int) ((TimeInforground / (1000 * 60 * 60)) % 24);
 
-                h=h+hours;
-                m=m+minutes;
-                if(m>=60){
-                    h = h+m/60;
-                    m = m%60;
+                h = h + hours;
+                m = m + minutes;
+                if (m >= 60) {
+                    h = h + m / 60;
+                    m = m % 60;
                 }
-                s = s+seconds;
-                if(s>=60){
-                    m = m+s/60;
-                    s = s%60;
+                s = s + seconds;
+                if (s >= 60) {
+                    m = m + s / 60;
+                    s = s % 60;
                 }
 
-                spForDayEditor.putInt(PackageName,hours*60+minutes);
-                spForDayEditor.apply();
+                prefsHelper.setDataForDay(usageApiPackageName, hours * 60 + minutes);
 
                 /////////////////////////////////////////////////////////////////////////////////
 
-                int userData1 = dailyLimit.getInt(PackageName, Integer.MAX_VALUE);
-                if((userData1 == Integer.MAX_VALUE)){
+                int userData1 = prefsHelper.getDailyLimit(usageApiPackageName);
+                if ((userData1 == Integer.MAX_VALUE)) {
                     //not been saved...
-                    dailyLimitEditor.putInt(PackageName,Integer.MAX_VALUE);
-                    dailyLimitEditor.apply();
-                }
-                else{
+                    prefsHelper.setDailyLimit(usageApiPackageName, Integer.MAX_VALUE);
+                } else {
                     // already there...
                 }
 
-                int userData2 = contLimit.getInt(PackageName, Integer.MAX_VALUE);
-                if((userData1 == Integer.MAX_VALUE)){
+                int userData2 = prefsHelper.getContLimit(usageApiPackageName);
+                if ((userData2 == Integer.MAX_VALUE)) {
                     //not been saved...
-                    contLimitEditor.putInt(PackageName,Integer.MAX_VALUE);
-                    contLimitEditor.apply();
-                }
-                else{
+                    prefsHelper.setContLimit(usageApiPackageName, Integer.MAX_VALUE);
+                } else {
                     // already there...
                 }
 
                 /////////////////////////////////////////////////////////////////////////////////
 
-                treeMap.put(TimeInforground,PackageName);
+                treeMap.put(TimeInforground, usageApiPackageName);
 
-                dbClass.setAppListTodaysTimings(PackageName,hours,minutes);
-                Log.i("BAC123", "PackageName is" + PackageName + "Time is: " + hours + "h" + ":" + minutes + "m" + seconds + "s");
+                dbClass.setAppListTodaysTimings(usageApiPackageName, hours, minutes);
+                Log.i("BAC123", "PackageName is" + usageApiPackageName + "Time is: " + hours + "h" + ":" + minutes + "m" + seconds + "s");
             }
         }
 
         mHourDay.setText(Integer.toString(h));
         mMinDay.setText(Integer.toString(m));
+    }
 
+    private void setWeeklyLimit(long time) {
+        int hours;
+        int minutes;
+        long TimeInforground;
+        int seconds;
+        String usageApiPackageName;
+        int h = 0, m = 0, s = 0;
+
+        List<UsageStats> statsWeekly = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, time - 10 * 1000, time);
+        if (statsWeekly != null) {
+            for (UsageStats usageStats : statsWeekly) {
+                usageApiPackageName = usageStats.getPackageName();
+                Log.i("pkg_name", "PackageName is" + usageApiPackageName);
+                TimeInforground = usageStats.getTotalTimeInForeground();
+
+                minutes = (int) ((TimeInforground / (1000 * 60)) % 60);
+                seconds = (int) (TimeInforground / 1000) % 60;
+                hours = (int) ((TimeInforground / (1000 * 60 * 60)) % 24);
+
+                h = h + hours;
+                m = m + minutes;
+                if (m >= 60) {
+                    h = h + m / 60;
+                    m = m % 60;
+                }
+                s = s + seconds;
+                if (s >= 60) {
+                    m = m + s / 60;
+                    s = s % 60;
+                }
+
+                prefsHelper.setDataForWeek(usageApiPackageName, (hours * 60 + minutes) / 7);
+            }
+        }
+
+        m = h * 60 + m;
+        m = m / 7;
+        h = m / 60;
+        m = m % 60;
+
+        mHourWeek.setText(Integer.toString(h));
+        mMinWeek.setText(Integer.toString(m));
+    }
+
+    private void displayTop10() {
         try {
             Drawable drawable;
             nse_exception.setVisibility(View.GONE);
@@ -240,95 +245,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 top10Apps[i] = treeMap.get(mapEntry);
             }
 
-        }
-        catch (NoSuchElementException nse){
+        } catch (NoSuchElementException nse) {
             nse_exception.setVisibility(View.VISIBLE);
             for (int i = 0; i <= 9; i++) {
                 ib[i].setVisibility(View.GONE);
             }
         }
+    }
 
-        h=0;
-        m=0;
-        s=0;
-
-        List<UsageStats> statsWeekly = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, time-10*1000, time);
-        if(statsWeekly != null) {
-            SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
-            for (UsageStats usageStats : statsWeekly) {
-                TimeInforground = usageStats.getTotalTimeInForeground();
-                PackageName = usageStats.getPackageName();
-                Log.i("pkg_name", "PackageName is" + PackageName);
-
-                minutes = (int) ((TimeInforground / (1000 * 60)) % 60);
-                seconds = (int) (TimeInforground / 1000) % 60;
-                hours = (int) ((TimeInforground / (1000 * 60 * 60)) % 24);
-
-                h=h+hours;
-                m=m+minutes;
-                if(m>=60){
-                    h = h+m/60;
-                    m = m%60;
-                }
-                s = s+seconds;
-                if(s>=60){
-                    m = m+s/60;
-                    s = s%60;
-                }
-
-                spForWeekEditor.putInt(PackageName,(hours*60+minutes)/7);
-                spForWeekEditor.apply();
-
-                //treeMap.put(TimeInforground,PackageName);
-
-                //dbClass.setAppListTodaysTimings(PackageName,hours,minutes);
-                //Log.i("BAC123", "PackageName is" + PackageName + "Time is: " + hours + "h" + ":" + minutes + "m" + seconds + "s");
-            }
-        }
-
-        m = h*60+m;
-        m = m/7;
-        h = m/60;
-        m = m%60;
-
-        mHourWeek.setText(Integer.toString(h));
-        mMinWeek.setText(Integer.toString(m));
-
-        //mDailyUsage.setText(Integer.toString(h)+"hr "+Integer.toString(m)+"min "+Integer.toString(s)+"sec");
-
-        int isSwitchChecked = spForPauseSwitch.getInt("chkStatus", -1);
-        if((isSwitchChecked == -1)){
+    private void configurePauseSwitch() {
+        int isSwitchChecked = prefsHelper.getPauseSwitch();
+        if ((isSwitchChecked == -1)) {
             //not been saved...
+            prefsHelper.setPauseSwitch(0);
             alertPauseSwitch.setChecked(false);
-            spPauseSwitchEditor.putInt("chkStatus",0);
-            spPauseSwitchEditor.apply();
-        }
-        else{
-            if(isSwitchChecked==1){
+        } else {
+            if (isSwitchChecked == 1) {
                 alertPauseSwitch.setChecked(true);
-                spPauseSwitchEditor.putInt("chkStatus",1);
-                spPauseSwitchEditor.apply();
-            }
-            else{
+                prefsHelper.setPauseSwitch(1);
+            } else {
                 alertPauseSwitch.setChecked(false);
-                spPauseSwitchEditor.putInt("chkStatus",0);
-                spPauseSwitchEditor.apply();
+                prefsHelper.setPauseSwitch(0);
             }
         }
 
 
-
-        alertPauseSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(alertPauseSwitch.isChecked()){
-                    spPauseSwitchEditor.putInt("chkStatus",1);
-                    spPauseSwitchEditor.apply();
-                }
-                else{
-                    spPauseSwitchEditor.putInt("chkStatus",0);
-                    spPauseSwitchEditor.apply();
-                }
+        alertPauseSwitch.setOnClickListener(v -> {
+            if (alertPauseSwitch.isChecked()) {
+                prefsHelper.setPauseSwitch(1);
+            } else {
+                prefsHelper.setPauseSwitch(0);
             }
         });
 
@@ -348,7 +294,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //mNotificationDrawer = new Intent(this.getCtx(), NotificationDrawerActivity.class);
-
     }
 
     private void toggleActionBar() {
@@ -359,8 +304,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navigationView.setNavigationItemSelectedListener(this);
 
         drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
-                R.string.navigation_drawer_open,R.string.navigation_drawer_close){
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 drawerView.bringToFront();
@@ -385,21 +330,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i ("isMyServiceRunning?", true+"");
+                Log.i("isMyServiceRunning?", true + "");
                 return true;
             }
         }
-        Log.i ("isMyServiceRunning?", false+"");
+        Log.i("isMyServiceRunning?", false + "");
         return false;
     }
 
 
     @Override
     public void onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
+        } else {
             super.onBackPressed();
             finish();
         }
@@ -425,6 +369,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         stopService(mServiceIntent);
         Log.i("MAINACT", "onDestroy!");
+        unregisterReceiver(phoneUnlockedReceiver);
         super.onDestroy();
     }
 

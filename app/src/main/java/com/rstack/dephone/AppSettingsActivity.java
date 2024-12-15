@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class AppSettingsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
@@ -24,7 +26,9 @@ public class AppSettingsActivity extends AppCompatActivity {
         // Passing the column number 1 to show online one column in each row.
         recyclerViewLayoutManager = new GridLayoutManager(AppSettingsActivity.this, 1);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        adapter = new AppsAdapter(AppSettingsActivity.this, new ApkInfoExtractor(AppSettingsActivity.this).getAllInstalledAppPackageNames());
+        ApkInfoExtractor apkInfoExtractor = new ApkInfoExtractor(this);
+        List<String> allInstalledAppPackageNames = apkInfoExtractor.getAllInstalledAppPackageNames();
+        adapter = new AppsAdapter(this, allInstalledAppPackageNames);
         recyclerView.setAdapter(adapter);
     }
 

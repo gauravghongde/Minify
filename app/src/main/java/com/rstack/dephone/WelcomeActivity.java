@@ -34,6 +34,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
+    Intent usagePermissionCheckActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,52 +46,36 @@ public class WelcomeActivity extends AppCompatActivity {
         mGetStarted.setEnabled(false);
         mTermsBtn = findViewById(R.id.termsWebsiteLabel);
 
-        mTermsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent webintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://gauravghongde.github.io/portfolio/Minify/terms"));
-                startActivity(webintent);
-            }
+        usagePermissionCheckActivity = new Intent(WelcomeActivity.this, UsageCheckActivity.class);
+
+        mTermsBtn.setOnClickListener(v -> {
+            Intent webintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://gauravghongde.github.io/portfolio/Minify/terms"));
+            startActivity(webintent);
         });
 
         mAuth = FirebaseAuth.getInstance();
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user!=null){
-                    Log.d("auth",user.getUid());
-
-                    Intent mainActivityIntent = new Intent(WelcomeActivity.this, MainActivity.class);
-                    mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(mainActivityIntent);
-                    finish();
-                }
+        mAuthStateListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if(user!=null){
+                Log.d("auth",user.getUid());
+                usagePermissionCheckActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(usagePermissionCheckActivity);
+                finish();
             }
         };
 
         if(!checkForPermission(WelcomeActivity.this)){
-            startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+//            startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         }
 
         mTnCchkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    mGetStarted.setEnabled(true);
-                }
-                else{
-                    mGetStarted.setEnabled(false);
-                }
+                mGetStarted.setEnabled(isChecked);
             }
         });
 
-        mGetStarted.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                butSignIn();
-            }
-        });
+        mGetStarted.setOnClickListener(v -> butSignIn());
 
     }
 
@@ -114,18 +99,14 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void butSignIn(){
-        mAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(!task.isSuccessful()) {
-                    Log.w("Auth", task.getException());
-                    Toast.makeText(WelcomeActivity.this,"SignInProblem",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Intent mainActivityIntent = new Intent(WelcomeActivity.this, MainActivity.class);
-                    startActivity(mainActivityIntent);
-                    finish();
-                }
+        mAuth.signInAnonymously().addOnCompleteListener(this, task -> {
+            if(!task.isSuccessful()) {
+                Log.w("Auth", task.getException());
+                Toast.makeText(WelcomeActivity.this,"SignInProblem",Toast.LENGTH_LONG).show();
+            }
+            else {
+                startActivity(usagePermissionCheckActivity);
+                finish();
             }
         });
     }
